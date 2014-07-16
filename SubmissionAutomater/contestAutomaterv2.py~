@@ -1,0 +1,33 @@
+import subprocess
+import time
+import random
+import MySQLdb
+from datetime import date, datetime, timedelta
+
+currentTime = datetime.now()
+endTime  = currentTime + timedelta(hours=48)
+
+db = MySQLdb.connect("localhost", "root","yobaco9891","trackerDB")
+cursor =  db.cursor()
+
+       
+while (currentTime < endTime):
+        process = subprocess.Popen(['curl -d "contestId=ec--magic-sogn--&Ecom_ShipTo_Postal_Name_First=Triesha&Ecom_ShipTo_Postal_Name_Last=Fagan&Ecom_ShipTo_Online_Email=fagan%40gatech.edu&confirm=fagan%40gatech.edu&Ecom_ShipTo_Postal_PostalCode=30318&Ecom_ShipTo_Postal_Country=United%2bStates&submit=Submit%2bEntry" blog.woodworkingtooltips.com/contest/index.php | grep "accepted" -c &'], shell=True, stdout=subprocess.PIPE)
+        output= process.communicate()
+        if any('0' in op for op in output[0]):
+            sub_status= "Rejected"
+        else: sub_status = "Accepted"   
+
+
+        sub_next=random.randint(160,300);
+        sub_datetime = datetime.now()
+        cursor.execute('INSERT INTO submissions(sub_DATE,sub_TIME,sub_WAITTIME,sub_STATUS) VALUES (%s,%s,%s,%s)',(sub_datetime.date(),sub_datetime.time(),sub_next,sub_status));
+        time.sleep(sub_next);
+
+        db.commit()
+             
+
+db.close()
+
+
+#curl -d "contestId=ec--magic-sogn--&Ecom_ShipTo_Postal_Name_First=Triesha&Ecom_ShipTo_Postal_Name_Last=Fagan&Ecom_ShipTo_Online_Email=fagan%40gatech.edu&confirm=fagan%40gatech.edu&Ecom_ShipTo_Postal_PostalCode=30318&Ecom_ShipTo_Postal_Country=United%2bStates&submit=Submit%2bEntry" blog.woodworkingtooltips.com/contest/index.php > curl_o_test.html

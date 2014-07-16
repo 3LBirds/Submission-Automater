@@ -1,0 +1,46 @@
+<html>
+ <head> 
+  <title>Contest Automater</title>
+ </head>
+ <body>
+ <?php  
+  $con = mysql_connect('localhost', 'root', 'yobaco9891') or die (mysql_error());
+  $db = mysql_select_db("trackerDB", $con);
+ 
+
+
+$result = mysql_query("SELECT * FROM submissions");
+if (false === $result) {
+    echo mysql_error();
+}
+
+$numRows  = mysql_num_rows($result);
+
+echo "<table border='1'>
+<tr>
+<th>ID</th>
+<th>Date</th>
+<th>Time</th>
+<th>Time until next submission</th>
+<th>Status</th>
+</tr>";
+
+for($i=0; $i<$numRows; $i++) {
+  $row = mysql_fetch_array($result);	
+  echo "<tr>";
+  echo "<td>" . $row[0] . "</td>";
+  echo "<td>" . $row[1] . "</td>";
+  echo "<td>" . $row[2] . "</td>";
+  echo "<td>" . $row[3] . "</td>";
+  echo "<td>" . $row[4] . "</td>";
+  echo "</tr>";
+}
+
+echo "</table>";
+
+mysql_free_result($result);
+
+
+ ?>
+ </body>
+</html>
